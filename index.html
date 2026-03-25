@@ -1,0 +1,989 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="description" content="茉夏 - 艾草溫罐療癒空間。用溫熱能量和雙手的重量，為你帶來身心療癒。">
+<meta name="theme-color" content="#1a3328">
+<title>茉夏｜艾草溫罐療癒空間</title>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,300;0,400;1,300;1,400&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --green-deep:   #1a3328;
+    --green-mid:    #2d5a45;
+    --green-soft:   #3d7a5f;
+    --green-mist:   #6aaa8a;
+    --green-pale:   #c8ddd4;
+    --cream:        #f7f4ef;
+    --white:        #ffffff;
+    --gold:         #c9a96e;
+    --gold-light:   #e8d5a8;
+    --text-dark:    #1a2e25;
+    --text-mid:     #3a5a48;
+    --text-light:   #6a8a78;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: "Noto Serif TC", serif;
+    background-color: var(--cream);
+    color: var(--text-dark);
+    cursor: none;
+    overflow-x: hidden;
+  }
+
+  /* ── 自訂游標 ── */
+  .cursor {
+    position: fixed; top: 0; left: 0;
+    width: 10px; height: 10px;
+    background: var(--green-soft);
+    border-radius: 50%;
+    pointer-events: none; z-index: 9999;
+    transform: translate(-50%, -50%);
+    transition: transform 0.1s ease;
+  }
+  .cursor-ring {
+    position: fixed; top: 0; left: 0;
+    width: 36px; height: 36px;
+    border: 1.5px solid var(--green-mist);
+    border-radius: 50%;
+    pointer-events: none; z-index: 9998;
+    transform: translate(-50%, -50%);
+    transition: all 0.18s ease;
+    opacity: 0.7;
+  }
+
+  /* ── 導覽列 ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0;
+    z-index: 900;
+    padding: 22px 48px;
+    display: flex; align-items: center; justify-content: space-between;
+    transition: all 0.5s ease;
+  }
+  nav.scrolled {
+    background: rgba(26, 51, 40, 0.92);
+    backdrop-filter: blur(16px);
+    padding: 16px 48px;
+    box-shadow: 0 2px 30px rgba(0,0,0,0.15);
+  }
+  .nav-logo {
+    font-family: "Noto Serif TC", serif;
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--white);
+    letter-spacing: 4px;
+  }
+  .nav-links {
+    display: flex; gap: 36px; list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.8);
+    text-decoration: none;
+    font-size: 13px;
+    letter-spacing: 2px;
+    transition: color 0.3s;
+    position: relative;
+  }
+  .nav-links a::after {
+    content: '';
+    position: absolute; bottom: -4px; left: 0;
+    width: 0; height: 1px;
+    background: var(--gold);
+    transition: width 0.3s ease;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+  .nav-links a:hover::after { width: 100%; }
+
+  /* ── HERO ── */
+  .hero {
+    position: relative;
+    height: 100vh; min-height: 700px;
+    display: flex; align-items: center; justify-content: center;
+    overflow: hidden;
+    background: var(--green-deep);
+  }
+  .hero-bg {
+    position: absolute; inset: 0;
+    background-image: url('https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=1600');
+    background-size: cover;
+    background-position: center;
+    opacity: 0.22;
+    transform: scale(1.05);
+    animation: heroZoom 20s ease infinite alternate;
+  }
+  @keyframes heroZoom {
+    from { transform: scale(1.05); }
+    to   { transform: scale(1.12); }
+  }
+
+  /* 噪點紋理覆蓋 */
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    opacity: 0.4; z-index: 1;
+  }
+
+  /* 底部漸層過渡到cream */
+  .hero::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 220px;
+    background: linear-gradient(to bottom, transparent, var(--cream));
+    z-index: 2;
+  }
+
+  .hero-content {
+    position: relative; z-index: 3;
+    text-align: center;
+    padding: 0 24px;
+  }
+  .hero-label {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 15px;
+    color: var(--green-mist);
+    letter-spacing: 5px;
+    margin-bottom: 28px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.3s forwards;
+  }
+  .hero-title {
+    font-size: clamp(72px, 12vw, 130px);
+    font-weight: 300;
+    color: var(--white);
+    letter-spacing: 18px;
+    line-height: 1;
+    margin-bottom: 16px;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.6s forwards;
+  }
+  .hero-subtitle {
+    font-size: 15px;
+    color: var(--green-pale);
+    letter-spacing: 3px;
+    font-weight: 300;
+    margin-bottom: 52px;
+    line-height: 2.2;
+    opacity: 0;
+    animation: fadeUp 1s ease 0.9s forwards;
+  }
+  .hero-cta {
+    display: inline-block;
+    border: 1px solid var(--gold);
+    color: var(--gold-light);
+    padding: 15px 44px;
+    font-size: 13px;
+    letter-spacing: 3px;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.2s forwards;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero-cta::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--gold);
+    transform: translateX(-100%);
+    transition: transform 0.4s ease;
+    z-index: -1;
+  }
+  .hero-cta:hover { color: var(--green-deep); }
+  .hero-cta:hover::before { transform: translateX(0); }
+
+  .scroll-indicator {
+    position: absolute; bottom: 80px; left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex; flex-direction: column; align-items: center; gap: 10px;
+    opacity: 0;
+    animation: fadeUp 1s ease 1.8s forwards;
+  }
+  .scroll-indicator span {
+    font-size: 10px;
+    letter-spacing: 4px;
+    color: var(--green-mist);
+    font-family: "Cormorant Garamond", serif;
+  }
+  .scroll-line {
+    width: 1px; height: 60px;
+    background: linear-gradient(to bottom, var(--green-mist), transparent);
+    animation: scrollPulse 2s ease infinite;
+  }
+  @keyframes scrollPulse {
+    0%, 100% { opacity: 0.4; transform: scaleY(1); }
+    50% { opacity: 1; transform: scaleY(1.1); }
+  }
+
+  /* ── 共用版塊結構 ── */
+  .section {
+    padding: 120px 24px;
+    max-width: 1100px;
+    margin: 0 auto;
+  }
+  .section-full {
+    padding: 0;
+    max-width: 100%;
+  }
+  .section-label {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    letter-spacing: 5px;
+    color: var(--green-soft);
+    text-align: center;
+    margin-bottom: 16px;
+  }
+  .section-title {
+    font-size: clamp(26px, 4vw, 38px);
+    font-weight: 400;
+    text-align: center;
+    letter-spacing: 6px;
+    color: var(--green-deep);
+    margin-bottom: 20px;
+  }
+  .gold-line {
+    width: 50px; height: 1px;
+    background: var(--gold);
+    margin: 0 auto 52px;
+  }
+
+  /* ── 品牌故事 ── */
+  .story-section {
+    background: var(--white);
+    padding: 120px 24px;
+  }
+  .story-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 80px;
+    align-items: center;
+  }
+  .story-text-col {}
+  .story-watermark {
+    position: absolute;
+    font-size: 280px;
+    font-weight: 700;
+    color: rgba(45, 90, 69, 0.04);
+    font-family: "Noto Serif TC", serif;
+    top: -60px; left: -20px;
+    line-height: 1;
+    pointer-events: none;
+    user-select: none;
+  }
+  .story-text-col {
+    position: relative;
+  }
+  .story-quote {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 22px;
+    color: var(--green-mid);
+    line-height: 1.8;
+    margin-bottom: 32px;
+    padding-left: 24px;
+    border-left: 2px solid var(--gold);
+  }
+  .story-body {
+    font-size: 15px;
+    color: var(--text-mid);
+    line-height: 2.2;
+    margin-bottom: 16px;
+    font-weight: 300;
+  }
+  .story-highlight {
+    margin-top: 32px;
+    padding: 24px;
+    background: var(--green-deep);
+    color: var(--green-pale);
+    font-size: 14px;
+    line-height: 2.2;
+    letter-spacing: 1px;
+    text-align: center;
+  }
+  .story-img-col {
+    position: relative;
+  }
+  .story-img-frame {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 3/4;
+  }
+  .story-img-frame img {
+    width: 100%; height: 100%;
+    object-fit: cover;
+    filter: saturate(0.8) contrast(1.05);
+    transition: transform 0.8s ease;
+  }
+  .story-img-frame:hover img { transform: scale(1.04); }
+  .story-img-frame::after {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(26,51,40,0.3) 0%, transparent 60%);
+  }
+  .story-img-badge {
+    position: absolute;
+    bottom: -20px; left: -20px;
+    background: var(--gold);
+    color: var(--green-deep);
+    padding: 20px 24px;
+    font-size: 12px;
+    letter-spacing: 2px;
+    font-weight: 600;
+    z-index: 2;
+  }
+
+  /* ── 媽祖影片區塊 ── */
+  .mazu-section {
+    position: relative;
+    background: var(--green-deep);
+    overflow: hidden;
+    padding: 0;
+  }
+
+  /* 上方漸層（從cream融入深綠）*/
+  .mazu-section::before {
+    content: '';
+    position: absolute; top: 0; left: 0; right: 0;
+    height: 140px;
+    background: linear-gradient(to bottom, var(--white), transparent);
+    z-index: 3;
+    pointer-events: none;
+  }
+  /* 下方漸層（從深綠融出）*/
+  .mazu-section::after {
+    content: '';
+    position: absolute; bottom: 0; left: 0; right: 0;
+    height: 140px;
+    background: linear-gradient(to top, var(--cream), transparent);
+    z-index: 3;
+    pointer-events: none;
+  }
+
+  .mazu-video-wrap {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 16/9;
+    overflow: hidden;
+  }
+  .mazu-video-wrap iframe {
+    position: absolute; inset: 0;
+    width: 100%; height: 100%;
+    border: none;
+    pointer-events: none;
+  }
+
+  /* 左右兩側遮罩，柔化影片邊緣 */
+  .mazu-side-fade-left {
+    position: absolute; top: 0; left: 0; bottom: 0;
+    width: 18%;
+    background: linear-gradient(to right, var(--green-deep), transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+  .mazu-side-fade-right {
+    position: absolute; top: 0; right: 0; bottom: 0;
+    width: 18%;
+    background: linear-gradient(to left, var(--green-deep), transparent);
+    z-index: 2;
+    pointer-events: none;
+  }
+
+  /* 影片上方中心覆蓋文字層 */
+  .mazu-overlay {
+    position: absolute; inset: 0;
+    z-index: 4;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: radial-gradient(ellipse at center,
+      rgba(26,51,40,0.10) 0%,
+      rgba(26,51,40,0.55) 100%);
+    pointer-events: none;
+  }
+  .mazu-overlay-label {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 14px;
+    letter-spacing: 6px;
+    color: var(--gold-light);
+    margin-bottom: 20px;
+  }
+  .mazu-overlay-title {
+    font-size: clamp(28px, 5vw, 52px);
+    font-weight: 300;
+    letter-spacing: 10px;
+    color: var(--white);
+    text-align: center;
+    text-shadow: 0 2px 20px rgba(0,0,0,0.3);
+    margin-bottom: 24px;
+  }
+  .mazu-overlay-desc {
+    font-size: 14px;
+    color: var(--green-pale);
+    letter-spacing: 2px;
+    text-align: center;
+    line-height: 2.2;
+    font-weight: 300;
+    max-width: 480px;
+    padding: 0 24px;
+  }
+
+  /* 影片下方的文字敘述段落（深色區內） */
+  .mazu-text-block {
+    position: relative;
+    z-index: 5;
+    max-width: 780px;
+    margin: 0 auto;
+    padding: 64px 24px 100px;
+    text-align: center;
+  }
+  .mazu-text-block p {
+    font-size: 15px;
+    color: var(--green-pale);
+    line-height: 2.4;
+    font-weight: 300;
+    margin-bottom: 14px;
+  }
+  .mazu-text-block .emphasis {
+    font-size: 16px;
+    color: var(--gold-light);
+    font-weight: 500;
+    letter-spacing: 1px;
+    margin-top: 24px;
+  }
+
+  /* ── 艾草區塊（靜態卡片格線，無旋轉動畫）── */
+  .moxa-section {
+    background: var(--green-deep);
+    padding: 120px 24px;
+    position: relative;
+    overflow: hidden;
+  }
+  /* 葉脈紋路背景 */
+  .moxa-section::before {
+    content: '';
+    position: absolute; inset: 0;
+    background-image:
+      radial-gradient(ellipse 60% 40% at 20% 50%, rgba(61,122,95,0.15) 0%, transparent 60%),
+      radial-gradient(ellipse 40% 60% at 80% 30%, rgba(45,90,69,0.12) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .moxa-inner {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+  }
+  .moxa-section .section-label { color: var(--green-mist); }
+  .moxa-section .section-title { color: var(--white); }
+  .moxa-section .gold-line { margin-bottom: 16px; }
+  .moxa-intro {
+    text-align: center;
+    color: var(--green-pale);
+    font-size: 15px;
+    line-height: 2.2;
+    font-weight: 300;
+    max-width: 600px;
+    margin: 0 auto 64px;
+  }
+  .moxa-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 2px;
+  }
+  .moxa-card {
+    background: rgba(255,255,255,0.04);
+    border: 1px solid rgba(255,255,255,0.08);
+    padding: 48px 36px;
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  .moxa-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: linear-gradient(135deg, rgba(201,169,110,0.08) 0%, transparent 60%);
+    opacity: 0;
+    transition: opacity 0.4s ease;
+  }
+  .moxa-card:hover {
+    background: rgba(255,255,255,0.07);
+    transform: translateY(-4px);
+  }
+  .moxa-card:hover::before { opacity: 1; }
+  .moxa-icon {
+    font-size: 36px;
+    margin-bottom: 20px;
+    display: block;
+  }
+  .moxa-card-num {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 48px;
+    color: rgba(201,169,110,0.2);
+    position: absolute;
+    top: 16px; right: 20px;
+    line-height: 1;
+  }
+  .moxa-card h3 {
+    font-size: 17px;
+    font-weight: 500;
+    color: var(--white);
+    letter-spacing: 3px;
+    margin-bottom: 14px;
+  }
+  .moxa-card p {
+    font-size: 13px;
+    color: var(--green-pale);
+    line-height: 2;
+    font-weight: 300;
+  }
+  .moxa-tag {
+    display: inline-block;
+    margin-top: 16px;
+    padding: 5px 14px;
+    border: 1px solid rgba(201,169,110,0.4);
+    font-size: 11px;
+    color: var(--gold-light);
+    letter-spacing: 2px;
+  }
+
+  /* ── 服務項目 ── */
+  .services-section {
+    background: var(--white);
+    padding: 120px 24px;
+  }
+  .services-inner { max-width: 1100px; margin: 0 auto; }
+  .services-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+  }
+  .service-card {
+    position: relative;
+    border: 1px solid var(--green-pale);
+    padding: 52px 36px 44px;
+    transition: all 0.5s ease;
+    overflow: hidden;
+    cursor: default;
+  }
+  .service-card::before {
+    content: '';
+    position: absolute; inset: 0;
+    background: var(--green-deep);
+    transform: translateY(100%);
+    transition: transform 0.5s ease;
+    z-index: 0;
+  }
+  .service-card:hover::before { transform: translateY(0); }
+  .service-card:hover .sc-num { color: rgba(255,255,255,0.1); }
+  .service-card:hover .sc-title { color: var(--white); }
+  .service-card:hover .sc-sub { color: var(--gold-light); }
+  .service-card:hover .sc-body { color: var(--green-pale); }
+  .service-card:hover .sc-line { background: var(--gold); }
+  .sc-num {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 64px;
+    color: rgba(45,90,69,0.1);
+    line-height: 1;
+    margin-bottom: 8px;
+    position: relative; z-index: 1;
+    transition: color 0.5s;
+  }
+  .sc-title {
+    font-size: 20px;
+    font-weight: 500;
+    letter-spacing: 4px;
+    color: var(--green-deep);
+    margin-bottom: 10px;
+    position: relative; z-index: 1;
+    transition: color 0.5s;
+  }
+  .sc-sub {
+    font-family: "Cormorant Garamond", serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--green-soft);
+    letter-spacing: 2px;
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+    transition: color 0.5s;
+  }
+  .sc-line {
+    width: 30px; height: 1px;
+    background: var(--green-pale);
+    margin-bottom: 20px;
+    position: relative; z-index: 1;
+    transition: background 0.5s, width 0.5s;
+  }
+  .service-card:hover .sc-line { width: 50px; }
+  .sc-body {
+    font-size: 14px;
+    color: var(--text-mid);
+    line-height: 2;
+    font-weight: 300;
+    position: relative; z-index: 1;
+    transition: color 0.5s;
+  }
+
+  /* ── CTA ── */
+  .cta-section {
+    background: var(--green-deep);
+    padding: 140px 24px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .cta-section::before {
+    content: '茉夏';
+    position: absolute;
+    font-size: 300px;
+    font-weight: 700;
+    color: rgba(255,255,255,0.025);
+    top: 50%; left: 50%;
+    transform: translate(-50%, -50%);
+    white-space: nowrap;
+    pointer-events: none;
+  }
+  .cta-section .section-label { color: var(--green-mist); }
+  .cta-section .section-title {
+    color: var(--white);
+    font-size: clamp(28px, 5vw, 52px);
+    margin-bottom: 20px;
+  }
+  .cta-body {
+    font-size: 15px;
+    color: var(--green-pale);
+    line-height: 2.4;
+    font-weight: 300;
+    max-width: 480px;
+    margin: 0 auto 52px;
+  }
+  .cta-btn {
+    display: inline-block;
+    background: var(--gold);
+    color: var(--green-deep);
+    padding: 18px 56px;
+    font-size: 14px;
+    letter-spacing: 4px;
+    font-weight: 600;
+    text-decoration: none;
+    transition: all 0.3s ease;
+    font-family: "Noto Serif TC", serif;
+  }
+  .cta-btn:hover {
+    background: var(--gold-light);
+    transform: translateY(-2px);
+    box-shadow: 0 12px 40px rgba(0,0,0,0.2);
+  }
+
+  /* ── Footer ── */
+  footer {
+    background: #0f1f18;
+    padding: 48px 24px;
+    text-align: center;
+  }
+  .footer-logo {
+    font-size: 24px;
+    letter-spacing: 8px;
+    color: var(--green-mist);
+    margin-bottom: 16px;
+  }
+  footer p {
+    font-size: 12px;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 2px;
+  }
+  .footer-line {
+    width: 60px; height: 1px;
+    background: rgba(255,255,255,0.1);
+    margin: 20px auto;
+  }
+
+  /* ── Scroll Reveal ── */
+  .reveal {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+  }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+  .reveal-delay-1 { transition-delay: 0.15s; }
+  .reveal-delay-2 { transition-delay: 0.30s; }
+  .reveal-delay-3 { transition-delay: 0.45s; }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(30px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RWD ── */
+  @media (max-width: 768px) {
+    nav { padding: 18px 24px; }
+    .nav-links { display: none; }
+    .story-inner { grid-template-columns: 1fr; gap: 48px; }
+    .story-img-col { order: -1; }
+    .moxa-grid { grid-template-columns: 1fr; }
+    .services-grid { grid-template-columns: 1fr; }
+    .mazu-video-wrap { aspect-ratio: 9/12; }
+  }
+</style>
+</head>
+<body>
+
+<!-- 游標 -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- 導覽列 -->
+<nav id="navbar">
+  <div class="nav-logo">茉夏</div>
+  <ul class="nav-links">
+    <li><a href="#story">品牌故事</a></li>
+    <li><a href="#mazu">媽祖遶境</a></li>
+    <li><a href="#moxa">艾草溫罐</a></li>
+    <li><a href="#services">服務項目</a></li>
+    <li><a href="#booking">預約</a></li>
+  </ul>
+</nav>
+
+<!-- ══ HERO ══ -->
+<section class="hero">
+  <div class="hero-bg"></div>
+  <div class="hero-content">
+    <div class="hero-label">Mouxia Healing Studio</div>
+    <h1 class="hero-title">茉夏</h1>
+    <p class="hero-subtitle">
+      讓身體慢慢暖起來<br>
+      讓心也有地方安放
+    </p>
+    <a href="#booking" class="hero-cta">預約你的療癒時光</a>
+  </div>
+  <div class="scroll-indicator">
+    <div class="scroll-line"></div>
+    <span>scroll</span>
+  </div>
+</section>
+
+<!-- ══ 品牌故事 ══ -->
+<section class="story-section" id="story">
+  <div class="story-inner">
+    <div class="story-text-col reveal">
+      <div class="story-watermark">茉</div>
+      <div class="section-label">Our Origin Story</div>
+      <h2 class="section-title" style="text-align:left; margin-bottom:20px;">品牌故事</h2>
+      <div class="gold-line" style="margin-left:0;"></div>
+      <p class="story-quote">
+        "療癒，不只是服務，<br>而是一種溫柔的陪伴。"
+      </p>
+      <p class="story-body">
+        茉夏的起點，來自台中榮民總醫院裡面。<br>
+        我們最初服務的對象，是長時間處於高壓環境中的醫護人員，
+        以及默默承受情緒與疲憊的病患家屬。
+      </p>
+      <p class="story-body">
+        在那樣的場域裡，我們更深刻理解——
+        真正的放鬆，不只是身體的舒緩，
+        而是一種被理解、被接住的感受。
+      </p>
+      <div class="story-highlight">
+        我們不做喧嘩的宣傳，<br>
+        只讓每一次被記住的溫度，替我們說話。
+      </div>
+    </div>
+    <div class="story-img-col reveal reveal-delay-2">
+      <div class="story-img-frame">
+        <img src="https://images.unsplash.com/photo-1600334129128-685c5582fd35?w=800" alt="療癒空間">
+        <div class="story-img-badge">Taiwan · 台中</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 媽祖遶境 + 影片 ══ -->
+<section class="mazu-section" id="mazu">
+  <div class="mazu-video-wrap">
+
+    <!-- YouTube 影片 autoplay mute loop - UPDATE VIDEO ID HERE -->
+    <iframe
+      src="https://www.youtube.com/embed/2FdqI3HqPKA?autoplay=1&mute=1&loop=1&playlist=2FdqI3HqPKA&controls=0&showinfo=0&rel=0&modestbranding=1&playsinline=1"
+      allow="autoplay; fullscreen"
+      allowfullscreen
+      title="媽祖遶境"
+    ></iframe>
+
+    <!-- 左右柔化遮罩 -->
+    <div class="mazu-side-fade-left"></div>
+    <div class="mazu-side-fade-right"></div>
+
+    <!-- 中央文字疊層 -->
+    <div class="mazu-overlay">
+      <div class="mazu-overlay-label">Walking Alongside Faith</div>
+      <h2 class="mazu-overlay-title">大甲媽祖・白沙屯</h2>
+      <p class="mazu-overlay-desc">
+        每年遶境，我們都在隊伍之中<br>
+        用雙手陪著每一個需要溫暖的人
+      </p>
+    </div>
+  </div>
+
+  <!-- 影片下方文字 -->
+  <div class="mazu-text-block reveal">
+    <p>
+      每年大甲媽祖遶境進香與白沙屯媽祖進香，<br>
+      我們都在隊伍之中，陪著那些有需要的人。
+    </p>
+    <p>
+      在長時間的行走與奔波裡，<br>
+      我們用最單純的方式，<br>
+      為信徒與工作人員帶來一點點溫度與舒緩。
+    </p>
+    <p>
+      沒有過多宣傳，也沒有刻意曝光，<br>
+      只是一步一步，用雙手去累積每一次的相遇。
+    </p>
+    <p class="emphasis">
+      一步一腳印，走在信仰的溫度裡。
+    </p>
+  </div>
+</section>
+
+<!-- ══ 艾草溫罐（靜態卡片，無旋轉動畫）══ -->
+<section class="moxa-section" id="moxa">
+  <div class="moxa-inner">
+    <div class="reveal">
+      <div class="section-label">Ancient Herbal Therapy</div>
+      <h2 class="section-title">什麼是艾草溫罐</h2>
+      <div class="gold-line"></div>
+      <p class="moxa-intro">
+        一種結合熱能與草本的療癒方式，<br>
+        讓身體慢慢放鬆，也讓情緒慢慢沉澱。<br>
+        源於千年中醫智慧，以溫為本，以靜為法。
+      </p>
+    </div>
+    <div class="moxa-grid">
+      <div class="moxa-card reveal reveal-delay-1">
+        <span class="moxa-card-num">01</span>
+        <span class="moxa-icon">🌿</span>
+        <h3>艾草溫熱</h3>
+        <p>精選天然艾草，以溫熱能量深入經絡，疏通氣血，化解長期積累的寒氣與鬱結。</p>
+        <span class="moxa-tag">Herbal Heat</span>
+      </div>
+      <div class="moxa-card reveal reveal-delay-2">
+        <span class="moxa-card-num">02</span>
+        <span class="moxa-icon">🫙</span>
+        <h3>溫罐導引</h3>
+        <p>結合傳統拔罐與現代手法，溫罐在皮膚上滑動，帶動筋膜放鬆，消散疲勞與緊繃。</p>
+        <span class="moxa-tag">Warm Cupping</span>
+      </div>
+      <div class="moxa-card reveal reveal-delay-3">
+        <span class="moxa-card-num">03</span>
+        <span class="moxa-icon">🌸</span>
+        <h3>身心整合</h3>
+        <p>療程不只作用於身體，更在靜默中讓情緒得到安放。放下緊繃，讓自己被好好接住。</p>
+        <span class="moxa-tag">Mind & Body</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 服務項目 ══ -->
+<section class="services-section" id="services">
+  <div class="services-inner">
+    <div class="reveal">
+      <div class="section-label">What We Offer</div>
+      <h2 class="section-title">服務項目</h2>
+      <div class="gold-line"></div>
+    </div>
+    <div class="services-grid">
+      <div class="service-card reveal reveal-delay-1">
+        <div class="sc-num">01</div>
+        <h3 class="sc-title">全身放鬆溫罐</h3>
+        <div class="sc-sub">Full Body Relaxation</div>
+        <div class="sc-line"></div>
+        <p class="sc-body">針對全身肌肉疲勞與壓力積累，透過艾草溫罐的熱能與手法，全面釋放身體緊繃，讓你重新找回輕盈感。</p>
+      </div>
+      <div class="service-card reveal reveal-delay-2">
+        <div class="sc-num">02</div>
+        <h3 class="sc-title">肩頸舒緩療程</h3>
+        <div class="sc-sub">Neck & Shoulder Relief</div>
+        <div class="sc-line"></div>
+        <p class="sc-body">專注於肩頸、背部等長期緊繃區域，改善循環、緩解酸痛，特別適合久坐工作者或高壓族群。</p>
+      </div>
+      <div class="service-card reveal reveal-delay-3">
+        <div class="sc-num">03</div>
+        <h3 class="sc-title">女性暖宮調理</h3>
+        <div class="sc-sub">Womb Warming Care</div>
+        <div class="sc-line"></div>
+        <p class="sc-body">以溫熱能量滋養子宮與腹部，調理體質寒涼、經期不適，讓身體回到溫暖與自然平衡的狀態。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CTA ══ -->
+<section class="cta-section" id="booking">
+  <div class="reveal">
+    <div class="section-label">Reserve Your Time</div>
+    <h2 class="section-title">預約療癒時光</h2>
+    <div class="gold-line"></div>
+    <p class="cta-body">
+      在這裡，你不需要一直撐著。<br>
+      給自己一點時間，被好好照顧。<br><br>
+      透過 LINE 與我們聯繫，<br>
+      為你安排最適合的療程。
+    </p>
+    <!-- UPDATE: Replace # with your actual LINE booking link -->
+    <a href="#" class="cta-btn">加入 LINE 預約</a>
+  </div>
+</section>
+
+<!-- ══ Footer ══ -->
+<footer>
+  <div class="footer-logo">茉夏</div>
+  <div class="footer-line"></div>
+  <p>© 2026 MouXia Healing Studio · 艾草溫罐療癒空間</p>
+  <p style="margin-top:8px;">台中 · Taiwan</p>
+</footer>
+
+<script>
+  // ── 游標
+  const cursor = document.getElementById('cursor');
+  const ring   = document.getElementById('cursorRing');
+  document.addEventListener('mousemove', e => {
+    cursor.style.left = e.clientX + 'px';
+    cursor.style.top  = e.clientY + 'px';
+    setTimeout(() => {
+      ring.style.left = e.clientX + 'px';
+      ring.style.top  = e.clientY + 'px';
+    }, 60);
+  });
+
+  // ── 導覽滾動效果
+  const navbar = document.getElementById('navbar');
+  window.addEventListener('scroll', () => {
+    navbar.classList.toggle('scrolled', window.scrollY > 60);
+  });
+
+  // ── Scroll Reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('visible');
+      }
+    });
+  }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
+
+  reveals.forEach(el => observer.observe(el));
+</script>
+</body>
+</html>
