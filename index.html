@@ -1206,7 +1206,7 @@ function onPlayerStateChange(event) {
     // 影片開始播放時自動開啟聲音
     if (player && typeof player.unMute === 'function' && !isMuted) {
       player.unMute();
-      player.setVolume(100);
+      player.setVolume(50);
     }
   }
 }
