@@ -447,6 +447,63 @@
     letter-spacing: 1px;
     margin-top: 24px;
   }
+   </div>
+</section>
+
+<!-- ══ 媽祖遶境 + 影片 ══ -->
+<section class="mazu-section" id="mazu">
+  <div class="mazu-video-wrap">
+    <!-- 靜音按鈕 -->
+    <button id="muteBtn" class="mazu-mute-btn">🔊 靜音</button>
+    
+    <!-- 備用播放按鈕（如果自動播放失敗時顯示） -->
+    <button id="playBtn" class="mazu-play-btn" style="display:none;">▶ 點擊播放影片</button>
+    
+    <video
+      id="masuVideo"
+      width="100%"
+      height="100%"
+      autoplay
+      muted
+      loop
+      playsinline
+      style="object-fit: cover; border: none;">
+      <source src="https://drive.google.com/uc?export=download&id=1H8XijWuJGVBSotkZAd0WFmD6OGPP7sdH" type="video/mp4">
+      你的瀏覽器不支援影片播放
+    </video>
+    
+    <div class="mazu-side-fade-left"></div>
+    <div class="mazu-side-fade-right"></div>
+    <div class="mazu-overlay">
+      <div class="mazu-overlay-label">Walking Alongside Faith</div>
+      <h2 class="mazu-overlay-title">大甲媽祖・白沙屯媽祖</h2>
+      <p class="mazu-overlay-desc">
+        每年遶境，我們都在隊伍之中<br>
+        用雙手陪著每一個需要溫暖的人
+      </p>
+    </div>
+  </div>
+  
+  <!-- 影片下方文字 -->
+  <div class="mazu-text-block reveal">
+    <p>
+      每年大甲媽祖遶境進香與白沙屯媽祖進香，<br>
+      我們都在隊伍之中，陪著那些有需要的人。
+    </p>
+    <p>
+      在長時間的行走與奔波裡，<br>
+      我們用最單純的方式，<br>
+      為信徒與工作人員帶來一點點溫度與舒緩。
+    </p>
+    <p>
+      沒有過多宣傳，也沒有刻意曝光，<br>
+      只是一步一步，用雙手去累積每一次的相遇。
+    </p>
+    <p class="emphasis">
+      一步一腳印，走在信仰的溫度裡。
+    </p>
+  </div>
+</section>
   /* ── 艾草區塊（靜態卡片格線，無旋轉動畫）── */
   .moxa-section {
     background: var(--green-deep);
