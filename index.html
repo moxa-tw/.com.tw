@@ -1179,7 +1179,7 @@
   reveals.forEach(el => observer.observe(el));
 
   // ── YouTube API 影片播放時自動開啟聲音
- var player;
+var player;
 var isMuted = false;
 
 function onYouTubeIframeAPIReady() {
@@ -1192,22 +1192,33 @@ function onYouTubeIframeAPIReady() {
 }
 
 function onPlayerReady(event) {
-  // 影片準備好後自動播放
-  event.target.playVideo();
+  // 延遲一點時間後再開啟聲音和播放
+  setTimeout(function() {
+    if (player && typeof player.playVideo === 'function') {
+      player.playVideo();
+      player.unMute();
+      player.setVolume(70);
+      isMuted = false;
+    }
+  }, 500);
   
   // 設定靜音按鈕的點擊事件
   const muteBtn = document.getElementById('muteBtn');
-  muteBtn.addEventListener('click', toggleMute);
+  if (muteBtn) {
+    muteBtn.addEventListener('click', toggleMute);
+  }
 }
 
 function onPlayerStateChange(event) {
   // 1 = 播放中
-  if (event.data === 1) {
-    // 影片開始播放時自動開啟聲音
-    if (player && typeof player.unMute === 'function' && !isMuted) {
-      player.unMute();
-      player.setVolume(50);
-    }
+  if (event.data === 1 && !isMuted) {
+    // 影片播放時確保聲音開啟
+    setTimeout(function() {
+      if (player && typeof player.unMute === 'function') {
+        player.unMute();
+        player.setVolume(70);
+      }
+    }, 70);
   }
 }
 
@@ -1223,7 +1234,7 @@ function toggleMute() {
   } else {
     // 開啟聲音
     player.unMute();
-    player.setVolume(100);
+    player.setVolume(70);
     isMuted = false;
     muteBtn.textContent = '🔊 靜音';
     muteBtn.classList.remove('muted');
