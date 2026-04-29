@@ -834,6 +834,36 @@
     .products-grid { grid-template-columns: 1fr; }
     .mazu-video-wrap { aspect-ratio: 9/12; }
   }
+    /* ── 靜音按鈕（新加入）── */
+  .mazu-mute-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(26, 51, 40, 0.85);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-light);
+    padding: 12px 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: "Noto Serif TC", serif;
+    backdrop-filter: blur(8px);
+  }
+
+  .mazu-mute-btn:hover {
+    background: rgba(26, 51, 40, 0.95);
+    transform: translateY(-2px);
+  }
+
+  .mazu-mute-btn.muted {
+    background: rgba(201, 169, 110, 0.2);
+    border-color: var(--gold-light);
+    color: var(--white);
+  }
+</style> 
 </style>
 </head>
 <body>
@@ -906,6 +936,9 @@
 <!-- ══ 媽祖遶境 + 影片 ══ -->
 <section class="mazu-section" id="mazu">
   <div class="mazu-video-wrap">
+     <!-- 靜音按鈕 -->
+    <button id="muteBtn" class="mazu-mute-btn">🔊 靜音</button>
+    
     <iframe
       id="masuVideo"
       width="100%"
@@ -1146,39 +1179,64 @@
   reveals.forEach(el => observer.observe(el));
 
   // ── YouTube API 影片播放時自動開啟聲音
-  var player;
-  function onYouTubeIframeAPIReady() {
-    player = new YT.Player('masuVideo', {
-      events: {
-        'onReady': onPlayerReady,
-        'onStateChange': onPlayerStateChange
-      }
-    });
-  }
+ var player;
+var isMuted = false;
 
-  function onPlayerReady(event) {
-    // 影片準備好後自動播放
-    event.target.playVideo();
-  }
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('masuVideo', {
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
+    }
+  });
+}
 
-  function onPlayerStateChange(event) {
-    // 1 = 播放中
-    if (event.data === 1) {
-      // 影片開始播放時自動開啟聲音
-      if (player && typeof player.unMute === 'function') {
-        player.unMute();
-        player.setVolume(70);
-      }
+function onPlayerReady(event) {
+  // 影片準備好後自動播放
+  event.target.playVideo();
+  
+  // 設定靜音按鈕的點擊事件
+  const muteBtn = document.getElementById('muteBtn');
+  muteBtn.addEventListener('click', toggleMute);
+}
+
+function onPlayerStateChange(event) {
+  // 1 = 播放中
+  if (event.data === 1) {
+    // 影片開始播放時自動開啟聲音
+    if (player && typeof player.unMute === 'function' && !isMuted) {
+      player.unMute();
+      player.setVolume(100);
     }
   }
+}
 
-  // 加載YouTube API
-  if (!window.YT) {
-    var tag = document.createElement('script');
-    tag.src = "https://www.youtube.com/iframe_api";
-    var firstScriptTag = document.getElementsByTagName('script')[0];
-    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+function toggleMute() {
+  const muteBtn = document.getElementById('muteBtn');
+  
+  if (!isMuted) {
+    // 靜音
+    player.mute();
+    isMuted = true;
+    muteBtn.textContent = '🔇 開啟聲音';
+    muteBtn.classList.add('muted');
+  } else {
+    // 開啟聲音
+    player.unMute();
+    player.setVolume(100);
+    isMuted = false;
+    muteBtn.textContent = '🔊 靜音';
+    muteBtn.classList.remove('muted');
   }
+}
+
+// 加載YouTube API
+if (!window.YT) {
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
 </script>
 </body>
 </html>
