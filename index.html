@@ -117,7 +117,7 @@
   .hero::before {
     content: '';
     position: absolute; inset: 0;
-    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='[w3.org](http://www.w3.org/2000/svg)'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
     opacity: 0.4; z-index: 1;
   }
   /* 底部漸層過渡到cream */
@@ -363,11 +363,10 @@
     aspect-ratio: 16/9;
     overflow: hidden;
   }
-  .mazu-video-wrap iframe {
+  .mazu-video-wrap video {
     position: absolute; inset: 0;
     width: 100%; height: 100%;
     border: none;
-    pointer-events: none;
   }
   /* 左右兩側遮罩，柔化影片邊緣 */
   .mazu-side-fade-left {
@@ -447,63 +446,59 @@
     letter-spacing: 1px;
     margin-top: 24px;
   }
-   </div>
-</section>
+  /* ── 靜音按鈕 ── */
+  .mazu-mute-btn {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    z-index: 10;
+    background: rgba(26, 51, 40, 0.85);
+    border: 1.5px solid var(--gold);
+    color: var(--gold-light);
+    padding: 12px 20px;
+    font-size: 13px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: "Noto Serif TC", serif;
+    backdrop-filter: blur(8px);
+  }
 
-<!-- ══ 媽祖遶境 + 影片 ══ -->
-<section class="mazu-section" id="mazu">
-  <div class="mazu-video-wrap">
-    <!-- 靜音按鈕 -->
-    <button id="muteBtn" class="mazu-mute-btn">🔊 靜音</button>
-    
-    <!-- 備用播放按鈕（如果自動播放失敗時顯示） -->
-    <button id="playBtn" class="mazu-play-btn" style="display:none;">▶ 點擊播放影片</button>
-    
-    <video
-      id="masuVideo"
-      width="100%"
-      height="100%"
-      autoplay
-      muted
-      loop
-      playsinline
-      style="object-fit: cover; border: none;">
-      <source src="https://drive.google.com/uc?export=download&id=1H8XijWuJGVBSotkZAd0WFmD6OGPP7sdH" type="video/mp4">
-      你的瀏覽器不支援影片播放
-    </video>
-    
-    <div class="mazu-side-fade-left"></div>
-    <div class="mazu-side-fade-right"></div>
-    <div class="mazu-overlay">
-      <div class="mazu-overlay-label">Walking Alongside Faith</div>
-      <h2 class="mazu-overlay-title">大甲媽祖・白沙屯媽祖</h2>
-      <p class="mazu-overlay-desc">
-        每年遶境，我們都在隊伍之中<br>
-        用雙手陪著每一個需要溫暖的人
-      </p>
-    </div>
-  </div>
-  
-  <!-- 影片下方文字 -->
-  <div class="mazu-text-block reveal">
-    <p>
-      每年大甲媽祖遶境進香與白沙屯媽祖進香，<br>
-      我們都在隊伍之中，陪著那些有需要的人。
-    </p>
-    <p>
-      在長時間的行走與奔波裡，<br>
-      我們用最單純的方式，<br>
-      為信徒與工作人員帶來一點點溫度與舒緩。
-    </p>
-    <p>
-      沒有過多宣傳，也沒有刻意曝光，<br>
-      只是一步一步，用雙手去累積每一次的相遇。
-    </p>
-    <p class="emphasis">
-      一步一腳印，走在信仰的溫度裡。
-    </p>
-  </div>
-</section>
+  .mazu-mute-btn:hover {
+    background: rgba(26, 51, 40, 0.95);
+    transform: translateY(-2px);
+  }
+
+  .mazu-mute-btn.muted {
+    background: rgba(201, 169, 110, 0.2);
+    border-color: var(--gold-light);
+    color: var(--white);
+  }
+  /* ── 播放按鈕 ── */
+  .mazu-play-btn {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    background: rgba(201, 169, 110, 0.9);
+    border: none;
+    color: var(--green-deep);
+    padding: 20px 40px;
+    font-size: 18px;
+    letter-spacing: 2px;
+    cursor: pointer;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    font-family: "Noto Serif TC", serif;
+    font-weight: 600;
+  }
+
+  .mazu-play-btn:hover {
+    background: var(--gold-light);
+    transform: translate(-50%, -50%) scale(1.05);
+  }
   /* ── 艾草區塊（靜態卡片格線，無旋轉動畫）── */
   .moxa-section {
     background: var(--green-deep);
@@ -891,60 +886,6 @@
     .products-grid { grid-template-columns: 1fr; }
     .mazu-video-wrap { aspect-ratio: 9/12; }
   }
-    /* ── 靜音按鈕（新加入）── */
-  .mazu-mute-btn {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    z-index: 10;
-    background: rgba(26, 51, 40, 0.85);
-    border: 1.5px solid var(--gold);
-    color: var(--gold-light);
-    padding: 12px 20px;
-    font-size: 13px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-family: "Noto Serif TC", serif;
-    backdrop-filter: blur(8px);
-  }
-
-  .mazu-mute-btn:hover {
-    background: rgba(26, 51, 40, 0.95);
-    transform: translateY(-2px);
-  }
-
-  .mazu-mute-btn.muted {
-    background: rgba(201, 169, 110, 0.2);
-    border-color: var(--gold-light);
-    color: var(--white);
-  }
-    /* ── 備用播放按鈕 ── */
-  .mazu-play-btn {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    z-index: 10;
-    background: rgba(201, 169, 110, 0.9);
-    border: none;
-    color: var(--green-deep);
-    padding: 20px 40px;
-    font-size: 18px;
-    letter-spacing: 2px;
-    cursor: pointer;
-    border-radius: 4px;
-    transition: all 0.3s ease;
-    font-family: "Noto Serif TC", serif;
-    font-weight: 600;
-  }
-
-  .mazu-play-btn:hover {
-    background: var(--gold-light);
-    transform: translate(-50%, -50%) scale(1.05);
-  }
-</style> 
 </style>
 </head>
 <body>
@@ -994,7 +935,7 @@
       <p class="story-body">
         茉夏的起點，來自台中榮民總醫院裡面。<br>
         我們最初服務的對象，是長時間處於高壓環境中的醫護人員，
-        以及默默承受情緒與疲憊的病患家屬。
+        以及默默承受情���與疲憊的病患家屬。
       </p>
       <p class="story-body">
         在那樣的場域裡，我們更深刻理解——
@@ -1014,7 +955,61 @@
     </div>
   </div>
 </section>
+
 <!-- ══ 媽祖遶境 + 影片 ══ -->
+<section class="mazu-section" id="mazu">
+  <div class="mazu-video-wrap">
+    <!-- 靜音按鈕 -->
+    <button id="muteBtn" class="mazu-mute-btn">🔊 靜音</button>
+    
+    <!-- 備用播放按鈕（如果自動播放失敗時顯示） -->
+    <button id="playBtn" class="mazu-play-btn" style="display:none;">▶ 點擊播放影片</button>
+    
+    <video
+      id="masuVideo"
+      width="100%"
+      height="100%"
+      autoplay
+      muted
+      loop
+      playsinline
+      style="object-fit: cover; border: none;">
+      <source src="https://drive.google.com/uc?export=download&id=1H8XijWuJGVBSotkZAd0WFmD6OGPP7sdH" type="video/mp4">
+      你的瀏覽器不支援影片播放
+    </video>
+    
+    <div class="mazu-side-fade-left"></div>
+    <div class="mazu-side-fade-right"></div>
+    <div class="mazu-overlay">
+      <div class="mazu-overlay-label">Walking Alongside Faith</div>
+      <h2 class="mazu-overlay-title">大甲媽祖・白沙屯媽祖</h2>
+      <p class="mazu-overlay-desc">
+        每年遶境，我們都在隊伍之中<br>
+        用雙手陪著每一個需要溫暖的人
+      </p>
+    </div>
+  </div>
+  
+  <!-- 影片下方文字 -->
+  <div class="mazu-text-block reveal">
+    <p>
+      每年大甲媽祖遶境進香與白沙屯媽祖進香，<br>
+      我們都在隊伍之中，陪著那些有需要的人。
+    </p>
+    <p>
+      在長時間的行走與奔波裡，<br>
+      我們用最單純的方式，<br>
+      為信徒與工作人員帶來一點點溫度與舒緩。
+    </p>
+    <p>
+      沒有過多宣傳，也沒有刻意曝光，<br>
+      只是一步一步，用雙手去累積每一次的相遇。
+    </p>
+    <p class="emphasis">
+      一步一腳印，走在信仰的溫度裡。
+    </p>
+  </div>
+</section>
 
 <!-- ══ 艾草溫罐（靜態卡片，無旋轉動畫）══ -->
 <section class="moxa-section" id="moxa">
@@ -1175,7 +1170,6 @@
       透過 LINE 與我們聯繫，<br>
       為你安排最適合的療程。
     </p>
-    <!-- UPDATE: Replace # with your actual LINE booking link -->
     <a href="https://lin.ee/yWClTgY" class="cta-btn" target="_blank">加入 LINE 預約</a>
   </div>
 </section>
@@ -1187,7 +1181,7 @@
   <p style="margin-top:8px;">台中 · Taiwan</p>
 </footer>
 <script>
- // ── 游標
+  // ── 游標
   const cursor = document.getElementById('cursor');
   const ring   = document.getElementById('cursorRing');
   document.addEventListener('mousemove', e => {
@@ -1214,95 +1208,95 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
   reveals.forEach(el => observer.observe(el));
 
- // ── 影片自動播放和靜音控制
-var videoElement = document.getElementById('masuVideo');
-var isMuted = false;
+  // ── 影片自動播放和靜音控制
+  var videoElement = document.getElementById('masuVideo');
+  var isMuted = false;
 
-// 確保影片自動播放
-if (videoElement) {
-  // 移除 muted 屬性以啟用聲音
-  videoElement.muted = false;
-  videoElement.volume = 1; // 100% 音量
-  
-  // 嘗試播放
-  var playPromise = videoElement.play();
-  if (playPromise !== undefined) {
-    playPromise
-      .then(function() {
-        // 自動播放成功
-        console.log('影片自動播放成功');
-      })
-      .catch(function(error) {
-        // 自動播放失敗，顯示播放按鈕
-        console.log('自動播放失敗，顯示播放按鈕');
-        showPlayButton();
-      });
+  // 確保影片自動播放
+  if (videoElement) {
+    // 移除 muted 屬性以啟用聲音
+    videoElement.muted = false;
+    videoElement.volume = 1; // 100% 音量
+    
+    // 嘗試播放
+    var playPromise = videoElement.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(function() {
+          // 自動播放成功
+          console.log('影片自動播放成功');
+        })
+        .catch(function(error) {
+          // 自動播放失敗，顯示播放按鈕
+          console.log('自動播放失敗，顯示播放按鈕');
+          showPlayButton();
+        });
+    }
   }
-}
 
-// 靜音按鈕控制
-const muteBtn = document.getElementById('muteBtn');
-if (muteBtn && videoElement) {
-  muteBtn.addEventListener('click', function toggleMute() {
-    if (videoElement.muted) {
-      // 開啟聲音
+  // 靜音按鈕控制
+  const muteBtn = document.getElementById('muteBtn');
+  if (muteBtn && videoElement) {
+    muteBtn.addEventListener('click', function toggleMute() {
+      if (videoElement.muted) {
+        // 開啟聲音
+        videoElement.muted = false;
+        videoElement.volume = 1;
+        isMuted = false;
+        muteBtn.textContent = '🔊 靜音';
+        muteBtn.classList.remove('muted');
+      } else {
+        // 靜音
+        videoElement.muted = true;
+        isMuted = true;
+        muteBtn.textContent = '🔇 開啟聲音';
+        muteBtn.classList.add('muted');
+      }
+    });
+  }
+
+  // 播放按鈕控制
+  const playBtn = document.getElementById('playBtn');
+  if (playBtn && videoElement) {
+    playBtn.addEventListener('click', function() {
+      videoElement.play();
       videoElement.muted = false;
       videoElement.volume = 1;
       isMuted = false;
+      hidePlayButton();
       muteBtn.textContent = '🔊 靜音';
       muteBtn.classList.remove('muted');
-    } else {
-      // 靜音
-      videoElement.muted = true;
-      isMuted = true;
-      muteBtn.textContent = '🔇 開啟聲音';
-      muteBtn.classList.add('muted');
-    }
-  });
-}
-
-// 播放按鈕控制
-const playBtn = document.getElementById('playBtn');
-if (playBtn && videoElement) {
-  playBtn.addEventListener('click', function() {
-    videoElement.play();
-    videoElement.muted = false;
-    videoElement.volume = 1;
-    isMuted = false;
-    hidePlayButton();
-    muteBtn.textContent = '🔊 靜音';
-    muteBtn.classList.remove('muted');
-  });
-}
-
-// 顯示播放按鈕
-function showPlayButton() {
-  const playBtn = document.getElementById('playBtn');
-  if (playBtn) {
-    playBtn.style.display = 'block';
+    });
   }
-}
 
-// 隱藏播放按鈕
-function hidePlayButton() {
-  const playBtn = document.getElementById('playBtn');
-  if (playBtn) {
-    playBtn.style.display = 'none';
-  }
-}
-
-// 監聽用戶互動後強制播放有聲音
-['click', 'touchstart', 'scroll'].forEach(event => {
-  document.addEventListener(event, function enableSound() {
-    if (videoElement && !isMuted) {
-      videoElement.muted = false;
-      videoElement.volume = 1;
-      videoElement.play().catch(function(err) {
-        console.log('播放失敗:', err);
-      });
+  // 顯示播放按鈕
+  function showPlayButton() {
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+      playBtn.style.display = 'block';
     }
-  }, { once: true });
-});
+  }
+
+  // 隱藏播放按鈕
+  function hidePlayButton() {
+    const playBtn = document.getElementById('playBtn');
+    if (playBtn) {
+      playBtn.style.display = 'none';
+    }
+  }
+
+  // 監聽用戶互動後強制播放有聲音
+  ['click', 'touchstart', 'scroll'].forEach(event => {
+    document.addEventListener(event, function enableSound() {
+      if (videoElement && !isMuted) {
+        videoElement.muted = false;
+        videoElement.volume = 1;
+        videoElement.play().catch(function(err) {
+          console.log('播放失敗:', err);
+        });
+      }
+    }, { once: true });
+  });
 </script>
 </body>
 </html>
