@@ -966,11 +966,11 @@
     <!-- 備用播放按鈕 -->
     <button id="playBtn" class="mazu-play-btn">▶ 點擊播放影片</button>
     
-   <iframe
+  <iframe
   id="masuVideo"
   width="100%"
   height="100%"
-  src="https://www.youtube.com/shorts/NeLMEMa_MTk?feature=share"
+  src="https://www.youtube.com/embed/NeLMEMa_MTk?autoplay=1&mute=0&loop=1&controls=0&modestbranding=1&enablejsapi=1&playlist=NeLMEMa_MTk"
   frameborder="0"
   allow="autoplay; encrypted-media; accelerometer; gyroscope"
   allowfullscreen
@@ -1208,32 +1208,35 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
   reveals.forEach(el => observer.observe(el));
 
-  // ── YouTube 播放控制
-  var isMuted = false;
-  const playBtn = document.getElementById('playBtn');
-  const muteBtn = document.getElementById('muteBtn');
+  // ── YouTube 播放控制（簡化版）
+const playBtn = document.getElementById('playBtn');
+const muteBtn = document.getElementById('muteBtn');
+var isMuted = false;
 
-  // 頁面載入時隱藏播放按鈕
-  window.addEventListener('load', function() {
-    setTimeout(function() {
-      hidePlayButton();
-    }, 1000);
+// 頁面載入時隱藏播放按鈕
+window.addEventListener('load', function() {
+  hidePlayButton();
+});
+
+// 靜音按鈕
+if (muteBtn) {
+  muteBtn.addEventListener('click', function() {
+    isMuted = !isMuted;
+    if (isMuted) {
+      muteBtn.textContent = '🔇 開啟聲音';
+      muteBtn.classList.add('muted');
+    } else {
+      muteBtn.textContent = '🔊 靜音';
+      muteBtn.classList.remove('muted');
+    }
   });
+}
 
-  // 靜音按鈕
-  if (muteBtn) {
-    muteBtn.addEventListener('click', function() {
-      if (!isMuted) {
-        isMuted = true;
-        muteBtn.textContent = '🔇 開啟聲音';
-        muteBtn.classList.add('muted');
-      } else {
-        isMuted = false;
-        muteBtn.textContent = '🔊 靜音';
-        muteBtn.classList.remove('muted');
-      }
-    });
+function hidePlayButton() {
+  if (playBtn) {
+    playBtn.style.display = 'none';
   }
+}
 
   // 播放按鈕
   if (playBtn) {
