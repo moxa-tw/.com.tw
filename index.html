@@ -965,17 +965,16 @@
     <!-- 備用播放按鈕（如果自動播放失敗時顯示） -->
     <button id="playBtn" class="mazu-play-btn" style="display:none;">▶ 點擊播放影片</button>
     
-    <video
-      id="masuVideo"
-      width="100%"
-      height="100%"
-      autoplay
-      loop
-      playsinline
-      style="object-fit: cover; border: none;">
-      <source src="https://www.flickr.com/photos/193069256@N06/55179125621/in/dateposted-public/" type="video/mp4">
-  你的瀏覽器不支援影片播放
-</video>
+   <iframe
+  id="masuVideo"
+  width="100%"
+  height="100%"
+  src="https://www.youtube.com/embed/n3mX5-ya-8A?autoplay=1&mute=0&loop=1&controls=0&modestbranding=1&playlist=n3mX5-ya-8A"
+  frameborder="0"
+  allow="autoplay; encrypted-media"
+  allowfullscreen
+  style="border: none; position: absolute; inset: 0;">
+</iframe>
     
     <div class="mazu-side-fade-left"></div>
     <div class="mazu-side-fade-right"></div>
