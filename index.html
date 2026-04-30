@@ -1190,11 +1190,13 @@
       ring.style.top  = e.clientY + 'px';
     }, 60);
   });
+  
   // ── 導覽滾動效果
   const navbar = document.getElementById('navbar');
   window.addEventListener('scroll', () => {
     navbar.classList.toggle('scrolled', window.scrollY > 60);
   });
+  
   // ── Scroll Reveal
   const reveals = document.querySelectorAll('.reveal');
   const observer = new IntersectionObserver((entries) => {
@@ -1206,8 +1208,8 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
   reveals.forEach(el => observer.observe(el));
 
- // ── YouTube 播放控制
-var isMuted = false;
+  // ── YouTube 播放控制
+  var isMuted = false;
   const playBtn = document.getElementById('playBtn');
   const muteBtn = document.getElementById('muteBtn');
 
@@ -1251,24 +1253,19 @@ var isMuted = false;
       playBtn.style.display = 'none';
     }
   }
-</script>
 
-// 加載YouTube API
-if (!window.YT) {
-  var tag = document.createElement('script');
-  tag.src = "https://www.youtube.com/iframe_api";
-  var firstScriptTag = document.getElementsByTagName('script')[0];
-  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
-}
-
-// 用戶互動後開啟聲音
-document.addEventListener('click', function forceUnmute() {
-  if (player && typeof player.unMute === 'function' && !isMuted) {
-    player.unMute();
-    player.setVolume(100);
+  // 加載YouTube API
+  if (!window.YT) {
+    var tag = document.createElement('script');
+    tag.src = "https://www.youtube.com/iframe_api";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
   }
-}, { once: true });
-  });
+
+  // 用戶互動後開啟聲音
+  document.addEventListener('click', function forceUnmute() {
+    console.log('用戶點擊');
+  }, { once: true });
 </script>
 </body>
 </html>
