@@ -969,7 +969,7 @@
   id="masuVideo"
   width="100%"
   height="100%"
-  src="https://www.youtube.com/embed/n3mX5-ya-8A?autoplay=1&mute=0&loop=1&controls=0&modestbranding=1&playlist=n3mX5-ya-8A"
+  src="https://www.youtube.com/embed/n3mX5-ya-8A?autoplay=0&mute=1&loop=1&controls=0&modestbranding=1&playlist=n3mX5-ya-8A"
   frameborder="0"
   allow="autoplay; encrypted-media"
   allowfullscreen
@@ -1206,94 +1206,103 @@
   }, { threshold: 0.12, rootMargin: '0px 0px -60px 0px' });
   reveals.forEach(el => observer.observe(el));
 
-  // ── 影片自動播放和靜音控制
-  var videoElement = document.getElementById('masuVideo');
-  var isMuted = false;
+  // ── YouTube 自動播放控制
+var player;
+var isMuted = false;
 
-  // 確保影片自動播放
-  if (videoElement) {
-    // 移除 muted 屬性以啟用聲音
-    videoElement.muted = false;
-    videoElement.volume = 1; // 100% 音量
-    
-    // 嘗試播放
-    var playPromise = videoElement.play();
-    if (playPromise !== undefined) {
-      playPromise
-        .then(function() {
-          // 自動播放成功
-          console.log('影片自動播放成功');
-        })
-        .catch(function(error) {
-          // 自動播放失敗，顯示播放按鈕
-          console.log('自動播放失敗，顯示播放按鈕');
-          showPlayButton();
-        });
+function onYouTubeIframeAPIReady() {
+  player = new YT.Player('masuVideo', {
+    events: {
+      'onReady': onPlayerReady,
+      'onStateChange': onPlayerStateChange
     }
-  }
+  });
+}
 
-  // 靜音按鈕控制
+function onPlayerReady(event) {
+  // 立即開始播放
+  setTimeout(function() {
+    event.target.playVideo();
+    event.target.unMute();
+    event.target.setVolume(100);
+  }, 500);
+  
+  // 靜音按鈕
   const muteBtn = document.getElementById('muteBtn');
-  if (muteBtn && videoElement) {
-    muteBtn.addEventListener('click', function toggleMute() {
-      if (videoElement.muted) {
-        // 開啟聲音
-        videoElement.muted = false;
-        videoElement.volume = 1;
-        isMuted = false;
-        muteBtn.textContent = '🔊 靜音';
-        muteBtn.classList.remove('muted');
-      } else {
-        // 靜音
-        videoElement.muted = true;
-        isMuted = true;
-        muteBtn.textContent = '🔇 開啟聲音';
-        muteBtn.classList.add('muted');
-      }
-    });
+  if (muteBtn) {
+    muteBtn.addEventListener('click', toggleMute);
   }
-
-  // 播放按鈕控制
+  
+  // 播放按鈕
   const playBtn = document.getElementById('playBtn');
-  if (playBtn && videoElement) {
+  if (playBtn) {
     playBtn.addEventListener('click', function() {
-      videoElement.play();
-      videoElement.muted = false;
-      videoElement.volume = 1;
+      player.playVideo();
+      player.unMute();
+      player.setVolume(100);
       isMuted = false;
       hidePlayButton();
       muteBtn.textContent = '🔊 靜音';
       muteBtn.classList.remove('muted');
     });
   }
+}
 
-  // 顯示播放按鈕
-  function showPlayButton() {
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-      playBtn.style.display = 'block';
+function onPlayerStateChange(event) {
+  if (event.data === 1) {
+    if (!isMuted) {
+      player.unMute();
+      player.setVolume(100);
     }
+    hidePlayButton();
   }
+}
 
-  // 隱藏播放按鈕
-  function hidePlayButton() {
-    const playBtn = document.getElementById('playBtn');
-    if (playBtn) {
-      playBtn.style.display = 'none';
-    }
+function toggleMute() {
+  const muteBtn = document.getElementById('muteBtn');
+  if (!isMuted) {
+    player.mute();
+    isMuted = true;
+    muteBtn.textContent = '🔇 開啟聲音';
+    muteBtn.classList.add('muted');
+  } else {
+    player.unMute();
+    player.setVolume(100);
+    isMuted = false;
+    muteBtn.textContent = '🔊 靜音';
+    muteBtn.classList.remove('muted');
   }
+}
 
-  // 監聽用戶互動後強制播放有聲音
-  ['click', 'touchstart', 'scroll'].forEach(event => {
-    document.addEventListener(event, function enableSound() {
-      if (videoElement && !isMuted) {
-        videoElement.muted = false;
-        videoElement.volume = 1;
-        videoElement.play().catch(function(err) {
-          console.log('播放失敗:', err);
-        });
-      }
-    }, { once: true });
+function showPlayButton() {
+  const playBtn = document.getElementById('playBtn');
+  if (playBtn) {
+    playBtn.style.display = 'block';
+  }
+}
+
+function hidePlayButton() {
+  const playBtn = document.getElementById('playBtn');
+  if (playBtn) {
+    playBtn.style.display = 'none';
+  }
+}
+
+// 加載YouTube API
+if (!window.YT) {
+  var tag = document.createElement('script');
+  tag.src = "https://www.youtube.com/iframe_api";
+  var firstScriptTag = document.getElementsByTagName('script')[0];
+  firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+}
+
+// 用戶互動後開啟聲音
+document.addEventListener('click', function forceUnmute() {
+  if (player && typeof player.unMute === 'function' && !isMuted) {
+    player.unMute();
+    player.setVolume(100);
+  }
+}, { once: true });
   });
 </script>
 </body>
